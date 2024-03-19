@@ -14,24 +14,48 @@
   </head>
   <body style="padding: 0; margin: 0">
     <model-viewer
+      id="vehicle"
       style="width: 100vw; height: 100vh"
-      src="ship_4.gltf"
+      src="models/rolls-royce_ghost.glb"
       shadow-intensity="2"
       skybox-image="https://modelviewer.dev/shared-assets/environments/spruit_sunrise_1k_HDR.jpg"
-      skybox-height="2m"
+      skybox-height="2.5m"
       autoplay
       max-camera-orbit="auto 90deg auto"
-      alt="A 3D model of a robot"
       ar
       camera-controls
     >
-      <button style="height: 200px; padding: 10px" slot="ar-button" id="ar-button">View in your space</button>
+      <button
+        style="height: 200px; padding: 10px"
+        slot="ar-button"
+        id="ar-button"
+      >
+        View in your space
+      </button>
 
       <div id="ar-prompt">
         <img src="https://modelviewer.dev/assets/hand.png" />
       </div>
 
       <button id="ar-failure">AR is not tracking!</button>
+      <div class="controls" id="color-controls">
+        <button data-color="#ffffff">White</button>
+        <button data-color="#ff00ff">Pink</button>
+        <button data-color="#000000">Black</button>
+      </div>
     </model-viewer>
+    <script>
+      const modelViewerVehicle = document.querySelector("model-viewer#vehicle");
+
+      document
+        .querySelector("#color-controls")
+        .addEventListener("click", (event) => {
+          const colorString = event.target.dataset.color;
+          const [rims, innerRims] = modelViewerVehicle.model.materials;
+
+          rims.pbrMetallicRoughness.setBaseColorFactor(colorString);
+          innerRims.pbrMetallicRoughness.setBaseColorFactor(colorString);
+        });
+    </script>
   </body>
 </html>
