@@ -2,20 +2,55 @@
 import Layout from "../layouts/Layout.astro";
 
 const stickers = [
-  { label: "Web Engineering", meshName: "WE_compact_color_white" },
-  { label: "Astro", meshName: "astro-logo-light-gradient" },
-  { label: "Tailwind", meshName: "tailwind" },
-  { label: "Github", meshName: "octobeer" },
-  { label: "Contentful", meshName: "contentful" },
-  { label: "React", meshName: "react" },
-  { label: "Vercel", meshName: "vercel" },
+  {
+    label: "Astro",
+    meshName: "astro-logo-light-gradient",
+    position: "1.0085895796022792m 0.8075676354110835m -0.0500000338054255m",
+    normal: "-4.371137946441115e-8m 1.3435884034343458e-7m -0.99999999999999m",
+  },
+  {
+    label: "WebEngineering",
+    meshName: "WE_compact_color_white",
+    position: "3.0085895796022792m 0.8075676354110835m -0.0500000338054255m",
+    normal: "-4.371137946441115e-8m 1.3435884034343458e-7m -0.99999999999999m",
+  },
+  {
+    label: "Tailwind",
+    meshName: "tailwind",
+    position: "2.0085895796022792m 0.8075676354110835m -0.0500000338054255m",
+    normal: "-4.371137946441115e-8m 1.3435884034343458e-7m -0.99999999999999m",
+  },
+  {
+    label: "Github",
+    meshName: "octobeer",
+    position: "3.0085895796022792m 0.8075676354110835m -0.0500000338054255m",
+    normal: "-4.371137946441115e-8m 1.3435884034343458e-7m -0.99999999999999m",
+  },
+  {
+    label: "Contentful",
+    meshName: "contentful",
+    position: "3.0085895796022792m 0.8075676354110835m -0.0500000338054255m",
+    normal: "-4.371137946441115e-8m 1.3435884034343458e-7m -0.99999999999999m",
+  },
+  {
+    label: "React",
+    meshName: "react",
+    position: "3.0085895796022792m 0.8075676354110835m -0.0500000338054255m",
+    normal: "-4.371137946441115e-8m 1.3435884034343458e-7m -0.99999999999999m",
+  },
+  {
+    label: "Vercel",
+    meshName: "vercel",
+    position: "3.0085895796022792m 0.8075676354110835m -0.0500000338054255m",
+    normal: "-4.371137946441115e-8m 1.3435884034343458e-7m -0.99999999999999m",
+  },
 ];
 ---
 
 <Layout>
   <model-viewer
     id="model"
-    class="w-screen h-[80vh]"
+    class="w-screen h-[80vh] bg-slate-50"
     src="models/laptop.glb"
     shadow-intensity="2"
     skybox-height="2.5m"
@@ -27,13 +62,20 @@ const stickers = [
   >
     <button
       class="Hotspot"
-      id="astro"
-      slot="hotspot-astro"
-      data-position="1.0085895796022792m 0.8075676354110835m -0.0500000338054255m"
-      data-normal="-4.371137946441115e-8m 1.3435884034343458e-7m -0.99999999999999m"
-      data-visibility-attribute="visible"
-    >
-    </button>
+      name={stickers[0].label.toLocaleLowerCase()}
+      id={`hotspot-${stickers[0].label.toLocaleLowerCase()}`}
+      slot={`hotspot-${stickers[0].label.toLocaleLowerCase()}`}
+      data-position={stickers[0].position}
+      data-normal={stickers[0].normal}
+      data-visibility-attribute="visible"></button>
+    <button
+      class="Hotspot"
+      slot="hotspot-keyboard"
+      name="keyboard"
+      id="hotspot-keyboard"
+      data-position="-1.1718241994341527m 0.1831944303972577m 1.3089070080424285m"
+      data-normal="8.537971432630591e-8m 0.9999999999999961m -2.3575008246693747e-8m"
+      data-visibility-attribute="visible"></button>
     <svg
       id="lines"
       width="100%"
@@ -42,7 +84,13 @@ const stickers = [
       class="pointer-events-none absolute inset-0 z-10"
     >
       <line
-        id="line-hotspot-astro"
+        data-sticker-name={stickers[0].label.toLocaleLowerCase()}
+        id={`line-hotspot-${stickers[0].label.toLocaleLowerCase()}`}
+        class="hidden stroke-violet-500"
+        style="stroke-width: 2; stroke-dasharray: 2;"></line>
+      <line
+        data-sticker-name="keyboard"
+        id="line-hotspot-keyboard"
         class="hidden stroke-violet-500"
         style="stroke-width: 2; stroke-dasharray: 2;"></line>
     </svg>
@@ -54,34 +102,38 @@ const stickers = [
       View in your space
     </button>
 
-    <p class="my-4 text-center font-semibold">Choose your keyboard color</p>
     <div
-      class="controls w-full mx-auto bg-transparent flex justify-center gap-4"
-      id="color-controls"
+      id="settings-keyboard"
+      class="absolute bottom-0 left-0 sm:left-1/2 sm:-translate-x-1/2 w-full sm:w-1/2 p-4 bg-white rounded shadow opacity-0"
     >
+      <p class="mb-4 text-center font-semibold">Choose Keyboard color</p>
+    <div class="flex justify-center gap-4">
+
       <button
-        class="py-2 px-4 border-2 rounded-full text-black active:bg-black active:text-white hover:bg-black hover:text-white transition-all"
-        data-color="#ffffff">Alpina White</button
+      class="py-2 px-4 border-2 rounded-full text-black active:bg-black active:text-white hover:bg-black hover:text-white transition-all"
+      data-color="#ffffff">Alpina White</button
       >
       <button
-        class="py-2 px-4 border-2 rounded-full text-black active:bg-black active:text-white hover:bg-black hover:text-white transition-all"
-        data-color="#0000ff">Ugly Blue</button
+      class="py-2 px-4 border-2 rounded-full text-black active:bg-black active:text-white hover:bg-black hover:text-white transition-all"
+      data-color="#0000ff">Ugly Blue</button
       >
       <button
-        class="py-2 px-4 border-2 rounded-full text-black active:bg-black active:text-white hover:bg-black hover:text-white transition-all"
-        data-color="#808080">Space Gray</button
+      class="py-2 px-4 border-2 rounded-full text-black active:bg-black active:text-white hover:bg-black hover:text-white transition-all"
+      data-color="#808080">Space Gray</button
       >
     </div>
+    </div>
+
     <div class="absolute bottom-10">
       <div id="sticker-controls" class="flex gap-5 p-4">
         {
           stickers.map((sticker) => (
             <div
               id={`settings-${sticker.label.toLocaleLowerCase()}`}
-              class="p-4 bg-violet-800 text-white rounded shadow drag opacity-0"
+              class="p-4 bg-white rounded shadow opacity-0"
             >
-              <p class="font-semibold mb-4">{sticker.label}</p>
-              <form class="flex flex-row gap-2">
+              <p class="font-semibold">{sticker.label}</p>
+              <form class="flex flex-row justify-center gap-2">
                 <label>Size</label>
                 <input
                   id={sticker.label.toLocaleLowerCase()}
@@ -103,22 +155,20 @@ const stickers = [
 <script>
   const modelViewer = document.querySelector("model-viewer#model");
 
-  const colorControls = document.querySelector("#color-controls");
+  const colorControls = document.querySelector("#settings-keyboard");
   const stickerControls = document.querySelector("#sticker-controls");
 
   const lines = modelViewer?.querySelectorAll("line");
   const baseRect = modelViewer?.getBoundingClientRect();
-  const astroRect = document
-    .querySelector("#settings-astro")
-    ?.getBoundingClientRect();
 
   const hotspots = modelViewer?.querySelectorAll(".Hotspot");
   hotspots?.forEach((hotspot) => {
     hotspot.addEventListener("click", () => {
-      const id = hotspot.id;
-      const settings = document.querySelector(`#settings-${id}`);
+      const { id, name } = hotspot as any;
+      const settings = document.querySelector(`#settings-${name}`);
+      console.log({ name });
       settings?.classList.toggle("opacity-0");
-      const svgLine = document.querySelector(`#line-hotspot-${id}`);
+      const svgLine = document.querySelector(`#line-${id}`);
       svgLine?.classList.toggle("hidden");
     });
   });
@@ -126,8 +176,9 @@ const stickers = [
   modelViewer?.addEventListener("load", () => {
     // TODO: redraw svg on window resize
     // onResize();
-    function drawLine(svgLine: SVGLineElement, name: string, rect?: DOMRect) {
-      if (!rect || !baseRect) return;
+    function drawLine(svgLine: SVGLineElement, name?: string, rect?: DOMRect) {
+      if (!rect || !baseRect || !name) return;
+
       const hotspot = (modelViewer as any)?.queryHotspot("hotspot-" + name);
       svgLine.setAttribute("x1", hotspot.canvasPosition.x);
       svgLine.setAttribute("y1", hotspot.canvasPosition.y);
@@ -140,8 +191,14 @@ const stickers = [
 
     // use requestAnimationFrame to update with renderer
     const startSVGRenderLoop = () => {
-      if (!lines || !lines[0]) return;
-      drawLine(lines[0], "astro", astroRect);
+      if (!lines) return;
+      lines.forEach((line) => {
+        const rect = document
+          .querySelector(`#settings-${line.dataset.stickerName}`)
+          ?.getBoundingClientRect();
+
+        drawLine(line, line.dataset.stickerName, rect);
+      });
       requestAnimationFrame(startSVGRenderLoop);
     };
 
