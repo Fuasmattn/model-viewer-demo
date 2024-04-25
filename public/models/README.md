@@ -1,1 +1,0 @@
-"Rolls-Royce Ghost" (https://skfb.ly/oQXEG) by Black Snow is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).

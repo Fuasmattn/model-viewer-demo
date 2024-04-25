@@ -1,90 +1,193 @@
-<!doctype html>
-<html>
-  <head>
-    <meta charset="UTF-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
-    />
-    <title>WebXR Demo</title>
-    <script
-      type="module"
-      src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"
-    ></script>
-  </head>
-  <body id="body" style="padding: 0; margin: 0">
-    <model-viewer
-      id="vehicle"
-      class="w-screen h-[80vh]"
-      src="models/laptop.glb"
-      shadow-intensity="2"
-      skybox-height="2.5m"
-      autoplay
-      max-camera-orbit="auto 90deg auto"
-      ar
-      camera-controls
+---
+import Layout from "../layouts/Layout.astro";
+
+const stickers = [
+  { label: "Web Engineering", meshName: "WE_compact_color_white" },
+  { label: "Astro", meshName: "astro-logo-light-gradient" },
+  { label: "Tailwind", meshName: "tailwind" },
+  { label: "Github", meshName: "octobeer" },
+  { label: "Contentful", meshName: "contentful" },
+  { label: "React", meshName: "react" },
+  { label: "Vercel", meshName: "vercel" },
+];
+---
+
+<Layout>
+  <model-viewer
+    id="model"
+    class="w-screen h-[80vh]"
+    src="models/laptop.glb"
+    shadow-intensity="2"
+    skybox-height="2.5m"
+    autoplay
+    disable-tap
+    max-camera-orbit="auto 90deg auto"
+    ar
+    camera-controls
+  >
+    <button
+      class="Hotspot"
+      id="astro"
+      slot="hotspot-astro"
+      data-position="1.0085895796022792m 0.8075676354110835m -0.0500000338054255m"
+      data-normal="-4.371137946441115e-8m 1.3435884034343458e-7m -0.99999999999999m"
+      data-visibility-attribute="visible"
+    >
+    </button>
+    <svg
+      id="lines"
+      width="100%"
+      height="100%"
+      xmlns="http://www.w3.org/2000/svg"
+      class="pointer-events-none absolute inset-0 z-10"
+    >
+      <line
+        id="line-hotspot-astro"
+        class="hidden stroke-violet-500"
+        style="stroke-width: 2; stroke-dasharray: 2;"></line>
+    </svg>
+    <button
+      class="text-black absolute active:bg-black active:text-white transition-all bottom-10 p-4 rounded-full z-20 border left-1/2 -translate-x-1/2"
+      slot="ar-button"
+      id="ar-button"
+    >
+      View in your space
+    </button>
+
+    <p class="my-4 text-center font-semibold">Choose your keyboard color</p>
+    <div
+      class="controls w-full mx-auto bg-transparent flex justify-center gap-4"
+      id="color-controls"
     >
       <button
-        class="text-black absolute active:bg-black active:text-white transition-all bottom-10 p-4 rounded-full z-20 border left-1/2 -translate-x-1/2"
-        slot="ar-button"
-        id="ar-button"
+        class="py-2 px-4 border-2 rounded-full text-black active:bg-black active:text-white hover:bg-black hover:text-white transition-all"
+        data-color="#ffffff">Alpina White</button
       >
-        View in your space
-      </button>
-
-      <!-- <div id="ar-prompt">
-        <img src="https://modelviewer.dev/assets/hand.png" />
-      </div> -->
-
-      <!-- <button id="ar-failure">AR is not tracking!</button> -->
-      <p class="my-4 text-center font-semibold">Choose your keyboard color</p>
-      <div
-        class="controls w-full mx-auto bg-transparent flex justify-center gap-4"
-        id="color-controls"
+      <button
+        class="py-2 px-4 border-2 rounded-full text-black active:bg-black active:text-white hover:bg-black hover:text-white transition-all"
+        data-color="#0000ff">Ugly Blue</button
       >
-        <button
-          class="py-2 px-4 border-2 rounded-full text-black active:bg-black active:text-white hover:bg-black hover:text-white transition-all"
-          data-color="#ffffff">Alpina White</button
-        >
-        <button
-          class="py-2 px-4 border-2 rounded-full text-black active:bg-black active:text-white hover:bg-black hover:text-white transition-all"
-          data-color="#0000ff">Ugly Blue</button
-        >
-        <button
-          class="py-2 px-4 border-2 rounded-full text-black active:bg-black active:text-white hover:bg-black hover:text-white transition-all"
-          data-color="#808080">Space Gray</button
-        >
+      <button
+        class="py-2 px-4 border-2 rounded-full text-black active:bg-black active:text-white hover:bg-black hover:text-white transition-all"
+        data-color="#808080">Space Gray</button
+      >
+    </div>
+    <div class="absolute bottom-10">
+      <div id="sticker-controls" class="flex gap-5 p-4">
+        {
+          stickers.map((sticker) => (
+            <div
+              id={`settings-${sticker.label.toLocaleLowerCase()}`}
+              class="p-4 bg-violet-800 text-white rounded shadow drag opacity-0"
+            >
+              <p class="font-semibold mb-4">{sticker.label}</p>
+              <form class="flex flex-row gap-2">
+                <label>Size</label>
+                <input
+                  id={sticker.label.toLocaleLowerCase()}
+                  data-sticker-name={sticker.meshName}
+                  name="scale"
+                  min="0.2"
+                  max="1.5"
+                  step="0.1"
+                  type="range"
+                />
+              </form>
+            </div>
+          ))
+        }
       </div>
-    </model-viewer>
-  </body>
-  <script>
-    import { SwipeEventListener } from "swipe-event-listener";
+    </div>
+  </model-viewer>
+</Layout>
+<script>
+  const modelViewer = document.querySelector("model-viewer#model");
 
-    // const { swipeArea } = SwipeEventListener({
-    //   swipeArea: document.querySelector("body")!,
-    // });
+  const colorControls = document.querySelector("#color-controls");
+  const stickerControls = document.querySelector("#sticker-controls");
 
-    const arBtn = document.querySelector("#ar-button");
+  const lines = modelViewer?.querySelectorAll("line");
+  const baseRect = modelViewer?.getBoundingClientRect();
+  const astroRect = document
+    .querySelector("#settings-astro")
+    ?.getBoundingClientRect();
 
-    // swipeArea.addEventListener("swipeUp", () => {
-    //   const evt = new MouseEvent("click", {
-    //     bubbles: true,
-    //     cancelable: true,
-    //     view: window,
-    //   });
-    //   arBtn?.dispatchEvent(evt);
-    // });
-
-    const modelViewerVehicle = document.querySelector("model-viewer#vehicle");
-
-    const colorControls = document.querySelector("#color-controls");
-
-    colorControls?.addEventListener("click", (event: any) => {
-      const colorString = (event.target as any).dataset?.color;
-      const [first, second] = (modelViewerVehicle as any).model?.materials;
-
-      first.pbrMetallicRoughness.setBaseColorFactor(colorString);
-      second.pbrMetallicRoughness.setBaseColorFactor(colorString);
+  const hotspots = modelViewer?.querySelectorAll(".Hotspot");
+  hotspots?.forEach((hotspot) => {
+    hotspot.addEventListener("click", () => {
+      const id = hotspot.id;
+      const settings = document.querySelector(`#settings-${id}`);
+      settings?.classList.toggle("opacity-0");
+      const svgLine = document.querySelector(`#line-hotspot-${id}`);
+      svgLine?.classList.toggle("hidden");
     });
-  </script>
-</html>
+  });
+
+  modelViewer?.addEventListener("load", () => {
+    // TODO: redraw svg on window resize
+    // onResize();
+    function drawLine(svgLine: SVGLineElement, name: string, rect?: DOMRect) {
+      if (!rect || !baseRect) return;
+      const hotspot = (modelViewer as any)?.queryHotspot("hotspot-" + name);
+      svgLine.setAttribute("x1", hotspot.canvasPosition.x);
+      svgLine.setAttribute("y1", hotspot.canvasPosition.y);
+      svgLine.setAttribute(
+        "x2",
+        ((rect.left + rect.right) / 2 - baseRect.left).toString()
+      );
+      svgLine.setAttribute("y2", (rect.top - baseRect.top).toString());
+    }
+
+    // use requestAnimationFrame to update with renderer
+    const startSVGRenderLoop = () => {
+      if (!lines || !lines[0]) return;
+      drawLine(lines[0], "astro", astroRect);
+      requestAnimationFrame(startSVGRenderLoop);
+    };
+
+    startSVGRenderLoop();
+  });
+
+  const getPrimitiveByName = (n: string) => {
+    const sym = Reflect.ownKeys((modelViewer as any).model).find((s) => {
+      return String(s) === "Symbol(primitives)";
+    });
+
+    const primitives: any = sym ? (modelViewer as any).model[sym] : [];
+    console.log({ primitives });
+    return primitives.find(({ name }: any) => name === n);
+  };
+
+  stickerControls?.addEventListener("change", (event: any) => {
+    const { name, value } = event.target;
+    const stickerName = (event.target as any).dataset?.stickerName;
+    const stickerMesh = getPrimitiveByName(stickerName).mesh;
+
+    if (name === "position") {
+      stickerMesh.position.z = value;
+      console.log(stickerMesh);
+    } else if (name === "scale") {
+      const { scale } = stickerMesh;
+      const ratio = scale.x / scale.z;
+      stickerMesh.scale.x = Number(value);
+      stickerMesh.scale.z = Number(value) / ratio;
+    }
+
+    // hacky force rerender
+    const materials = (modelViewer as any).model?.materials;
+    const currentBaseColorFactor =
+      materials[0].pbrMetallicRoughness.baseColorFactor;
+    console.log(currentBaseColorFactor);
+    materials[0].pbrMetallicRoughness.setBaseColorFactor(
+      currentBaseColorFactor
+    );
+  });
+
+  colorControls?.addEventListener("click", (event: any) => {
+    const colorString = (event.target as any).dataset?.color;
+    const [first, second] = (modelViewer as any).model?.materials;
+
+    first.pbrMetallicRoughness.setBaseColorFactor(colorString);
+    second.pbrMetallicRoughness.setBaseColorFactor(colorString);
+  });
+</script>
