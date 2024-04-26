@@ -45,6 +45,21 @@ const stickers = [
     normal: "-4.371137946441115e-8m 1.3435884034343458e-7m -0.99999999999999m",
   },
 ];
+
+const keyboardColorOptions = [
+  {
+    value: "#bc7306",
+    classes: "border-[#bc7306] active:bg-[#bc7306] [&.selected]:bg-[#bc7306] hover:bg-[#bc7306]",
+  },
+  {
+    value: "#e6e6e6",
+    classes: "border-[#e6e6e6] active:bg-[#e6e6e6] [&.selected]:bg-[#e6e6e6] hover:bg-[#e6e6e6]",
+  },
+  {
+    value: "#000000",
+    classes: "border-[#000000] active:bg-[#000000] [&.selected]:bg-[#000000] hover:bg-[#000000]",
+  },
+];
 ---
 
 <Layout>
@@ -95,7 +110,7 @@ const stickers = [
         style="stroke-width: 2; stroke-dasharray: 2;"></line>
     </svg>
     <button
-      class="text-black absolute active:bg-black active:text-white transition-all bottom-10 p-4 rounded-full z-20 border left-1/2 -translate-x-1/2"
+      class="text-black absolute active:bg-black active:text-white transition-all top-10 p-4 rounded-full z-20 border left-1/2 -translate-x-1/2"
       slot="ar-button"
       id="ar-button"
     >
@@ -104,24 +119,26 @@ const stickers = [
 
     <div
       id="settings-keyboard"
-      class="absolute bottom-0 left-0 sm:left-1/2 sm:-translate-x-1/2 w-full sm:w-1/2 p-4 bg-white rounded shadow opacity-0"
+      class="absolute bottom-0 left-0 sm:left-1/2 sm:-translate-x-1/2 w-fit opacity-0"
     >
-      <p class="mb-4 text-center font-semibold">Choose Keyboard color</p>
-    <div class="flex justify-center gap-4">
-
-      <button
-      class="py-2 px-4 border-2 rounded-full text-black active:bg-black active:text-white hover:bg-black hover:text-white transition-all"
-      data-color="#ffffff">Alpina White</button
-      >
-      <button
-      class="py-2 px-4 border-2 rounded-full text-black active:bg-black active:text-white hover:bg-black hover:text-white transition-all"
-      data-color="#0000ff">Ugly Blue</button
-      >
-      <button
-      class="py-2 px-4 border-2 rounded-full text-black active:bg-black active:text-white hover:bg-black hover:text-white transition-all"
-      data-color="#808080">Space Gray</button
-      >
-    </div>
+      <div class="bg-white rounded shadow p-4">
+        <p class="mb-4 text-center font-semibold">Choose Keyboard color</p>
+        <div class="flex justify-center gap-4">
+          {
+            keyboardColorOptions.map(({ value, classes }) => {
+              return (
+                <button
+                  class:list={[
+                    "py-2 px-4 shadow size-10 border-4 rounded-full transition-all",
+                    classes,
+                  ]}
+                  data-color={value}
+                />
+              );
+            })
+          }
+        </div>
+      </div>
     </div>
 
     <div class="absolute bottom-10">
@@ -241,6 +258,10 @@ const stickers = [
   });
 
   colorControls?.addEventListener("click", (event: any) => {
+    colorControls.querySelectorAll("button").forEach((button) => {
+      button.classList.remove("selected");
+    });
+    event.target.classList.add("selected");
     const colorString = (event.target as any).dataset?.color;
     const [first, second] = (modelViewer as any).model?.materials;
 
