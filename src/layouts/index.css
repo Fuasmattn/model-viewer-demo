@@ -23,8 +23,9 @@ model-viewer {
   @apply bg-violet-500;
   @apply size-4;
   @apply rounded-full;
+  @apply transition-all;
+  @apply shadow;
   border: 0;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
   box-sizing: border-box;
   cursor: pointer;
   padding: 8px;
@@ -38,6 +39,10 @@ model-viewer {
   box-shadow: none;
   pointer-events: none;
   @apply size-4;
+}
+
+.Hotspot:hover {
+  @apply shadow-xl;
 }
 
 .Hotspot:focus {

@@ -1,0 +1,28 @@
+---
+interface Props {
+  options: {
+    value: string;
+    classes: string;
+  }[];
+}
+const { options } = Astro.props as Props;
+---
+
+<div class="bg-white rounded shadow p-4">
+  <p class="mb-4 text-center font-semibold">Choose Keyboard color</p>
+  <div class="flex justify-center gap-4">
+    {
+      options.map(({ value, classes }) => {
+        return (
+          <button
+            class:list={[
+              "py-2 px-4 shadow size-10 border-4 rounded-full transition-all",
+              classes,
+            ]}
+            data-color={value}
+          />
+        );
+      })
+    }
+  </div>
+</div>

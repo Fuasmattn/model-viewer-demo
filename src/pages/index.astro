@@ -1,47 +1,13 @@
 ---
+import KeyboardOptions from "../components/KeyboardOptions.astro";
+import StickerControls from "../components/StickerControls.astro";
 import Layout from "../layouts/Layout.astro";
 
-const stickers = [
+const stickerHotspots = [
   {
     label: "Astro",
     meshName: "astro-logo-light-gradient",
     position: "1.0085895796022792m 0.8075676354110835m -0.0500000338054255m",
-    normal: "-4.371137946441115e-8m 1.3435884034343458e-7m -0.99999999999999m",
-  },
-  {
-    label: "WebEngineering",
-    meshName: "WE_compact_color_white",
-    position: "3.0085895796022792m 0.8075676354110835m -0.0500000338054255m",
-    normal: "-4.371137946441115e-8m 1.3435884034343458e-7m -0.99999999999999m",
-  },
-  {
-    label: "Tailwind",
-    meshName: "tailwind",
-    position: "2.0085895796022792m 0.8075676354110835m -0.0500000338054255m",
-    normal: "-4.371137946441115e-8m 1.3435884034343458e-7m -0.99999999999999m",
-  },
-  {
-    label: "Github",
-    meshName: "octobeer",
-    position: "3.0085895796022792m 0.8075676354110835m -0.0500000338054255m",
-    normal: "-4.371137946441115e-8m 1.3435884034343458e-7m -0.99999999999999m",
-  },
-  {
-    label: "Contentful",
-    meshName: "contentful",
-    position: "3.0085895796022792m 0.8075676354110835m -0.0500000338054255m",
-    normal: "-4.371137946441115e-8m 1.3435884034343458e-7m -0.99999999999999m",
-  },
-  {
-    label: "React",
-    meshName: "react",
-    position: "3.0085895796022792m 0.8075676354110835m -0.0500000338054255m",
-    normal: "-4.371137946441115e-8m 1.3435884034343458e-7m -0.99999999999999m",
-  },
-  {
-    label: "Vercel",
-    meshName: "vercel",
-    position: "3.0085895796022792m 0.8075676354110835m -0.0500000338054255m",
     normal: "-4.371137946441115e-8m 1.3435884034343458e-7m -0.99999999999999m",
   },
 ];
@@ -49,15 +15,18 @@ const stickers = [
 const keyboardColorOptions = [
   {
     value: "#bc7306",
-    classes: "border-[#bc7306] active:bg-[#bc7306] [&.selected]:bg-[#bc7306] hover:bg-[#bc7306]",
+    classes:
+      "border-[#bc7306] active:bg-[#bc7306] [&.selected]:bg-[#bc7306] hover:bg-[#bc7306]",
   },
   {
     value: "#e6e6e6",
-    classes: "border-[#e6e6e6] active:bg-[#e6e6e6] [&.selected]:bg-[#e6e6e6] hover:bg-[#e6e6e6]",
+    classes:
+      "border-[#e6e6e6] active:bg-[#e6e6e6] [&.selected]:bg-[#e6e6e6] hover:bg-[#e6e6e6]",
   },
   {
     value: "#000000",
-    classes: "border-[#000000] active:bg-[#000000] [&.selected]:bg-[#000000] hover:bg-[#000000]",
+    classes:
+      "border-[#000000] active:bg-[#000000] [&.selected]:bg-[#000000] hover:bg-[#000000]",
   },
 ];
 ---
@@ -77,11 +46,11 @@ const keyboardColorOptions = [
   >
     <button
       class="Hotspot"
-      name={stickers[0].label.toLocaleLowerCase()}
-      id={`hotspot-${stickers[0].label.toLocaleLowerCase()}`}
-      slot={`hotspot-${stickers[0].label.toLocaleLowerCase()}`}
-      data-position={stickers[0].position}
-      data-normal={stickers[0].normal}
+      name={stickerHotspots[0].label.toLocaleLowerCase()}
+      id={`hotspot-${stickerHotspots[0].label.toLocaleLowerCase()}`}
+      slot={`hotspot-${stickerHotspots[0].label.toLocaleLowerCase()}`}
+      data-position={stickerHotspots[0].position}
+      data-normal={stickerHotspots[0].normal}
       data-visibility-attribute="visible"></button>
     <button
       class="Hotspot"
@@ -99,8 +68,8 @@ const keyboardColorOptions = [
       class="pointer-events-none absolute inset-0 z-10"
     >
       <line
-        data-sticker-name={stickers[0].label.toLocaleLowerCase()}
-        id={`line-hotspot-${stickers[0].label.toLocaleLowerCase()}`}
+        data-sticker-name={stickerHotspots[0].label.toLocaleLowerCase()}
+        id={`line-hotspot-${stickerHotspots[0].label.toLocaleLowerCase()}`}
         class="hidden stroke-violet-500"
         style="stroke-width: 2; stroke-dasharray: 2;"></line>
       <line
@@ -119,53 +88,13 @@ const keyboardColorOptions = [
 
     <div
       id="settings-keyboard"
-      class="absolute bottom-0 left-0 sm:left-1/2 sm:-translate-x-1/2 w-fit opacity-0"
+      class="absolute bottom-20 right-20 opacity-0"
     >
-      <div class="bg-white rounded shadow p-4">
-        <p class="mb-4 text-center font-semibold">Choose Keyboard color</p>
-        <div class="flex justify-center gap-4">
-          {
-            keyboardColorOptions.map(({ value, classes }) => {
-              return (
-                <button
-                  class:list={[
-                    "py-2 px-4 shadow size-10 border-4 rounded-full transition-all",
-                    classes,
-                  ]}
-                  data-color={value}
-                />
-              );
-            })
-          }
-        </div>
-      </div>
+      <KeyboardOptions options={keyboardColorOptions} />
     </div>
 
-    <div class="absolute bottom-10">
-      <div id="sticker-controls" class="flex gap-5 p-4">
-        {
-          stickers.map((sticker) => (
-            <div
-              id={`settings-${sticker.label.toLocaleLowerCase()}`}
-              class="p-4 bg-white rounded shadow opacity-0"
-            >
-              <p class="font-semibold">{sticker.label}</p>
-              <form class="flex flex-row justify-center gap-2">
-                <label>Size</label>
-                <input
-                  id={sticker.label.toLocaleLowerCase()}
-                  data-sticker-name={sticker.meshName}
-                  name="scale"
-                  min="0.2"
-                  max="1.5"
-                  step="0.1"
-                  type="range"
-                />
-              </form>
-            </div>
-          ))
-        }
-      </div>
+    <div class="absolute bottom-0">
+      <StickerControls stickers={stickerHotspots} />
     </div>
   </model-viewer>
 </Layout>
@@ -183,7 +112,6 @@ const keyboardColorOptions = [
     hotspot.addEventListener("click", () => {
       const { id, name } = hotspot as any;
       const settings = document.querySelector(`#settings-${name}`);
-      console.log({ name });
       settings?.classList.toggle("opacity-0");
       const svgLine = document.querySelector(`#line-${id}`);
       svgLine?.classList.toggle("hidden");
@@ -228,18 +156,34 @@ const keyboardColorOptions = [
     });
 
     const primitives: any = sym ? (modelViewer as any).model[sym] : [];
-    console.log({ primitives });
     return primitives.find(({ name }: any) => name === n);
   };
 
-  stickerControls?.addEventListener("change", (event: any) => {
-    const { name, value } = event.target;
+  stickerControls?.addEventListener("input", (event: any) => {
+    const { name, value, id } = event.target;
     const stickerName = (event.target as any).dataset?.stickerName;
     const stickerMesh = getPrimitiveByName(stickerName).mesh;
 
-    if (name === "position") {
-      stickerMesh.position.z = value;
-      console.log(stickerMesh);
+    if (name === "position-y") {
+      stickerMesh.position.y = -value;
+      const hotspotPosition = (modelViewer as any).queryHotspot(
+        `hotspot-${id}`
+      ).position;
+
+      (modelViewer as any).updateHotspot({
+        name: `hotspot-${id}`,
+        position: `${hotspotPosition.x}m ${-value - 0.2}m 0m`,
+      });
+    } else if (name === "position-x") {
+      stickerMesh.position.x = -value;
+      const hotspotPosition = (modelViewer as any).queryHotspot(
+        `hotspot-${id}`
+      ).position;
+
+      (modelViewer as any).updateHotspot({
+        name: `hotspot-${id}`,
+        position: `${-value}m ${hotspotPosition.y}m 0m`,
+      });
     } else if (name === "scale") {
       const { scale } = stickerMesh;
       const ratio = scale.x / scale.z;
@@ -251,7 +195,6 @@ const keyboardColorOptions = [
     const materials = (modelViewer as any).model?.materials;
     const currentBaseColorFactor =
       materials[0].pbrMetallicRoughness.baseColorFactor;
-    console.log(currentBaseColorFactor);
     materials[0].pbrMetallicRoughness.setBaseColorFactor(
       currentBaseColorFactor
     );

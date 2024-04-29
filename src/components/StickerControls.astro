@@ -1,0 +1,54 @@
+---
+interface Props {
+  stickers: {
+    label: string;
+    meshName: string;
+  }[];
+}
+const { stickers } = Astro.props as Props;
+---
+
+<div id="sticker-controls" class="flex gap-5 p-4">
+  {
+    stickers.map((sticker) => (
+      <div
+        id={`settings-${sticker.label.toLocaleLowerCase()}`}
+        class="p-4 bg-white rounded shadow opacity-0"
+      >
+        <p class="font-semibold">{sticker.label}</p>
+        <form class="flex flex-row justify-center gap-2">
+          <label>Size</label>
+          <input
+            id={sticker.label.toLocaleLowerCase()}
+            data-sticker-name={sticker.meshName}
+            name="scale"
+            min="0.2"
+            max="1.5"
+            step="0.1"
+            type="range"
+          />
+          <label>x</label>
+          <input
+            id={sticker.label.toLocaleLowerCase()}
+            data-sticker-name={sticker.meshName}
+            name="position-x"
+            min="-1.2"
+            max="1.2"
+            step="0.1"
+            type="range"
+          />
+          <label>y</label>
+          <input
+            id={sticker.label.toLocaleLowerCase()}
+            data-sticker-name={sticker.meshName}
+            name="position-y"
+            min="-3"
+            max="-0.5"
+            step="0.1"
+            type="range"
+          />
+        </form>
+      </div>
+    ))
+  }
+</div>
